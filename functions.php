@@ -115,3 +115,79 @@ function read_item()
     }
 
 }
+
+function read_item_once($id)
+{
+    //include database connection
+    include 'config/database.php';
+    // $id = isset($id) ? "id is  $id" : die('ERROR: Record ID not found.');
+    if (!isset($id)) {
+        die('ERROR: Record ID not found.');
+    }
+// read current record's data
+    try {
+
+        // prepare select query
+        $query = "SELECT id, name, description, price FROM products WHERE id = ? LIMIT 0,1";
+        $stmt = $con->prepare($query);
+
+// this is the first question mark
+        $stmt->bindParam(1, $id);
+
+// execute our query
+        $stmt->execute();
+
+// store retrieved row to a variable
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// values to fill up our form
+        global $name, $description, $price;
+        $name = $row['name'];
+        $description = $row['description'];
+        $price = $row['price'];
+    } catch (PDOException $e) {
+        die('ERROR: ' . $exception->getMessage());
+
+    }
+
+}
+
+function uppdate_item($id)
+{
+    include 'config/database.php';
+
+    // get passed parameter value, in this case, the record ID
+    if (!isset($id)) {
+        die('ERROR: Record ID not found.');
+    }
+
+// read current record's data
+    try {
+        // prepare select query
+        $query = "SELECT id, name, description, price FROM products WHERE id = ? LIMIT 0,1";
+        $stmt = $con->prepare($query);
+
+        // this is the first question mark
+        $stmt->bindParam(1, $id);
+
+        // execute our query
+        $stmt->execute();
+
+        // store retrieved row to a variable
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // values to fill up our form
+        global $name, $description, $price;
+        $name = $row['name'];
+        $description = $row['description'];
+        $price = $row['price'];
+    }
+
+// show error
+     catch (PDOException $exception) {
+        die('ERROR: ' . $exception->getMessage());
+    }
+
+   
+
+}

@@ -17,11 +17,9 @@ UPDATE CURRENT_TIMESTAMP,
 (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
-
 --
 -- Dumping data for table `products`
 --
-
 INSERT INTO `products` (`
 id`,
 `name
