@@ -19,46 +19,46 @@
         <div class="page-header">
             <h1>Update Product</h1>
         </div>
-
-      <?php
-include "../functions.php";
-uppdate_item($_GET['id']);
-?>
-
-    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . "?id={$id}"; ?>" method="post">
-    <table class='table table-hover table-responsive table-bordered'>
-        <tr>
-            <td>Name</td>
-            <td><input type='text' name='name' value="<?php echo htmlspecialchars($name, ENT_QUOTES); ?>" class='form-control' /></td>
-        </tr>
-        <tr>
-            <td>Description</td>
-            <td><textarea name='description' class='form-control'><?php echo htmlspecialchars($description, ENT_QUOTES); ?></textarea></td>
-        </tr>
-        <tr>
-            <td>Price</td>
-            <td><input type='text' name='price' value="<?php echo htmlspecialchars($price, ENT_QUOTES); ?>" class='form-control' /></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                <input type='submit' value='Save Changes' class='btn btn-primary' />
-                <a href='../index.php' class='btn btn-danger'>Back to read products</a>
-            </td>
-        </tr>
-    </table>
-</form>
 <?php
+include "../functions.php";
+include '../config/database.php';
+
+// get passed parameter value, in this case, the record ID
+$id = isset($_GET['id']) ? $_GET['id'] : die('ERROR: Record ID not found.');
+
+// read current record's data
+try {
+    // prepare select query
+    $query = "SELECT id, name, description, price FROM products WHERE id = ? LIMIT 0,1";
+    $stmt = $con->prepare($query);
+
+    // this is the first question mark
+    $stmt->bindParam(1, $id);
+
+    // execute our query
+    $stmt->execute();
+
+    // store retrieved row to a variable
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // values to fill up our form
+    global $name, $description, $price;
+    $name = $row['name'];
+    $description = $row['description'];
+    $price = $row['price'];
+}
+
+// show error
+ catch (PDOException $exception) {
+    die('ERROR: ' . $exception->getMessage());
+}
 
 if ($_POST) {
+
     try {
-        $id = $_GET['id'];
-        // write update query
-        // in this case, it seemed like we have so many fields to pass and
-        // it is better to label them and not use question marks
         $query = "UPDATE products
-                    SET name=:name, description=:description, price=:price
-                    WHERE id = :id";
+                        SET name=:name, description=:description, price=:price
+                        WHERE id = :id";
 
         // prepare query for excecution
         $stmt = $con->prepare($query);
@@ -90,6 +90,32 @@ if ($_POST) {
 }
 
 ?>
+
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . "?id={$id}"; ?>" method="post">
+    <table class='table table-hover table-responsive table-bordered'>
+        <tr>
+            <td>Name</td>
+            <td><input type='text' name='name' value="<?php echo htmlspecialchars($name, ENT_QUOTES); ?>" class='form-control' /></td>
+        </tr>
+        <tr>
+            <td>Description</td>
+            <td><textarea name='description' class='form-control'><?php echo htmlspecialchars($description, ENT_QUOTES); ?></textarea></td>
+        </tr>
+        <tr>
+            <td>Price</td>
+            <td><input type='text' name='price' value="<?php echo htmlspecialchars($price, ENT_QUOTES); ?>" class='form-control' /></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <input type='submit' name="submit" value='Save Changes' class='btn btn-primary' />
+                <a href='../index.php' class='btn btn-danger'>Back to read products</a>
+            </td>
+        </tr>
+    </table>
+</form>
+
+
 
     </div> <!-- end .container -->
 
