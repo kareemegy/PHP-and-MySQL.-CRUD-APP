@@ -46,30 +46,5 @@ read_item();
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
 integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
 crossorigin="anonymous"></script>
-
-
-<script type='text/javascript'>
-// confirm record deletion
-// function delete( id ){
-
-//     var answer = confirm('Are you sure?');
-//     if (answer){
-//         // if user clicked ok,
-//         // pass the id to delete.php and execute the delete query
-//         window.location = 'php-beginner-crud-level-1/delete.php?id=' + id;
-//     }
-// }
-</script>
-<?php
-
-// $action = isset($_GET['action']) ? $_GET['action'] : "";
-
-// // if it was redirected from delete.php
-// if ($action == 'deleted') {
-//     echo "<div class='alert alert-success'>Record was deleted.</div>";
-// }
-
-?>
-
 </body>
 </html>
