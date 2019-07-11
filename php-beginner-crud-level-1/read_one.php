@@ -42,6 +42,12 @@ read_item_once($_GET['id'])
         <td><?php echo htmlspecialchars($price, ENT_QUOTES); ?></td>
     </tr>
     <tr>
+    <td>Image</td>
+    <td>
+    <?php echo $image ? "<img src='uploads/{$image}' style='width:300px;' />" : "No image found."; ?>
+    </td>
+</tr>
+    <tr>
         <td></td>
         <td>
             <a href='../index.php' class='btn btn-danger'>Back to read products</a>
